@@ -41,9 +41,9 @@ jobs:
           GOARCH: ${{ matrix.arch }}
         run: |
           if [ "${{ matrix.os }}" = "windows" ]; then
-            go build -o pgs3backup-${{ matrix.os }}-${{ matrix.arch }}.exe ./cmd/pgs3backup
+            go build -o pgs3backup-${{ matrix.os }}-${{ matrix.arch }}.exe ./cmd/
           else
-            go build -o pgs3backup-${{ matrix.os }}-${{ matrix.arch }} ./cmd/pgs3backup
+            go build -o pgs3backup-${{ matrix.os }}-${{ matrix.arch }} ./cmd/
           fi
 
       - name: Upload artifact
