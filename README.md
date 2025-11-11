@@ -113,8 +113,6 @@ Build locally:
 ```bash
 docker build -t pgs3backup .
 ```
-              valueFrom:
-```
 
 ## Cron Usage
 
