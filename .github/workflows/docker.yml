@@ -6,6 +6,11 @@ on:
       - 'v*'
     branches:
       - main
+    paths:
+      - '**/*.go'
+      - 'Dockerfile'
+      - '**/Dockerfile'
+      - '.dockerignore'
 
 env:
   REGISTRY: ghcr.io
