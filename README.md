@@ -1,5 +1,12 @@
 # pgs3backup
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/vladkanatov/pgs3backup)](https://goreportcard.com/report/github.com/vladkanatov/pgs3backup)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/vladkanatov/pgs3backup)](https://github.com/vladkanatov/pgs3backup)
+[![Release](https://img.shields.io/github/v/release/vladkanatov/pgs3backup)](https://github.com/vladkanatov/pgs3backup/releases)
+[![Docker](https://img.shields.io/badge/docker-ghcr.io-blue)](https://github.com/vladkanatov/pgs3backup/pkgs/container/pgs3backup)
+[![CI](https://github.com/vladkanatov/pgs3backup/workflows/Test/badge.svg)](https://github.com/vladkanatov/pgs3backup/actions)
+
 PostgreSQL backup utility with S3 storage.
 
 ## Features

@@ -1,3 +1,4 @@
+// Package config provides configuration management via environment variables.
 package config
 
 import (
@@ -8,6 +9,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// Config holds all application configuration settings.
 type Config struct {
 	// PostgreSQL настройки
 	DBHost     string

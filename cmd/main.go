@@ -1,8 +1,8 @@
+// Package main provides the entry point for pgs3backup utility.
 package main
 
 import (
 	"fmt"
-	"io"
 	"log"
 
 	"github.com/vladkanatov/pgs3backup/internal/compress"
@@ -41,10 +41,14 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("ошибка создания дампа: %w", err)
 	}
-	defer dumpReader.Close()
+	defer func() {
+		if closeErr := dumpReader.Close(); closeErr != nil {
+			log.Printf("Ошибка закрытия dumpReader: %v", closeErr)
+		}
+	}()
 
 	// Готовим reader для загрузки
-	var uploadReader io.ReadCloser = dumpReader
+	uploadReader := dumpReader
 
 	// Сжимаем если нужно
 	if cfg.Compress {

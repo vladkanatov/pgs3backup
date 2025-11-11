@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	_ "github.com/lib/pq"
+	_ "github.com/lib/pq" // PostgreSQL driver
 )
 
 // Dumper реализует создание логического бэкапа без вызова внешних утилит.
@@ -44,12 +44,19 @@ func (d *Dumper) Dump() (io.ReadCloser, error) {
 	pr, pw := io.Pipe()
 
 	go func() {
-		// Закроем pipe при завершении горутины
-		defer pw.Close()
+		defer func() {
+			if closeErr := pw.Close(); closeErr != nil {
+				pw.CloseWithError(closeErr)
+			}
+		}()
 
 		// Создаём tar writer
 		tw := tar.NewWriter(pw)
-		defer tw.Close()
+		defer func() {
+			if closeErr := tw.Close(); closeErr != nil {
+				pw.CloseWithError(closeErr)
+			}
+		}()
 
 		// Открываем DB соединение
 		connStr := d.buildConnString()
@@ -58,7 +65,11 @@ func (d *Dumper) Dump() (io.ReadCloser, error) {
 			pw.CloseWithError(fmt.Errorf("ошибка открытия подключения к БД: %w", err))
 			return
 		}
-		defer db.Close()
+		defer func() {
+			if closeErr := db.Close(); closeErr != nil {
+				pw.CloseWithError(closeErr)
+			}
+		}()
 
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 		defer cancel()
@@ -124,7 +135,9 @@ func (d *Dumper) listTables(ctx context.Context, db *sql.DB) ([]tableRef, error)
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		_ = rows.Close()
+	}()
 
 	var res []tableRef
 	for rows.Next() {
@@ -143,7 +156,9 @@ func (d *Dumper) buildCreateTable(ctx context.Context, db *sql.DB, schema, table
 	if err != nil {
 		return "", err
 	}
-	defer rows.Close()
+	defer func() {
+		_ = rows.Close()
+	}()
 
 	var cols []string
 	for rows.Next() {
@@ -173,7 +188,9 @@ func (d *Dumper) writeTableCSV(ctx context.Context, db *sql.DB, tw *tar.Writer, 
 	if err != nil {
 		return err
 	}
-	defer rows.Close()
+	defer func() {
+		_ = rows.Close()
+	}()
 
 	cols, err := rows.Columns()
 	if err != nil {

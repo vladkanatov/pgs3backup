@@ -1,3 +1,4 @@
+// Package s3 provides S3-compatible storage upload functionality.
 package s3
 
 import (
@@ -11,6 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 )
 
+// Uploader handles file uploads to S3-compatible storage.
 type Uploader struct {
 	bucket   string
 	uploader *s3manager.Uploader
@@ -44,7 +46,7 @@ func New(bucket, region, accessKey, secretKey, endpoint string) (*Uploader, erro
 func (u *Uploader) Upload(reader io.Reader, prefix, dbName string, compressed bool) (string, error) {
 	// Генерируем имя файла с timestamp
 	timestamp := time.Now().Format("2006-01-02_15-04-05")
-	
+
 	var key string
 	if compressed {
 		key = fmt.Sprintf("%s/%s_%s.dump.gz", prefix, dbName, timestamp)
