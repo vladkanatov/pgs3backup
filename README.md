@@ -22,7 +22,7 @@ PostgreSQL backup utility with S3 storage.
 
 ```bash
 go mod download
-go build -o pgs3backup ./cmd/pgs3backup
+go build -o pgs3backup ./cmd/
 ```
 
 ## Usage
